@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.my-main-container{
+    position: relative;
+}
+.sidebar{
+    background-color: var(--sidebar-color);
+    color: var(--text-color);
+    height: 100vh;
+    width: 5%;
+    position: absolute;
+    left: 0;
+}
+.main_part{
+    width: 95%;
+    height: 100%;
+    padding: 1%;
+    margin-left: 5%;
+}
+.result_area{
+    background-color: var(--main-color);
+    color: var(--text-color);
+}
+.title_area{
+    background-color: #313131;
+    height: 10vh;
+    width: 100%;
+    color: var(--text-color);
+    border-radius: 10px;
+}
