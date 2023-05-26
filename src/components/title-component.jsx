@@ -2,7 +2,7 @@ import Image from "next/image";
 const Title = ({title, icon}) =>{
     return (
         <div className="title_area  flex-none  flex justify-center flex-col">
-            <div className="px-5 flex">
+            <div className="mr-5 flex">
                 <Image
                     src={icon}
                     alt={icon}

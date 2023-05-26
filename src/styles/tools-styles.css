@@ -3,20 +3,22 @@
 @tailwind utilities;
 
 .my-main-container{
-    position: relative;
+    height: 100vh;
+    width: 100vw;
 }
 .sidebar{
     background-color: var(--sidebar-color);
     color: var(--text-color);
-    height: 100vh;
+    height: 89.5vh;
     width: 90px;
     position: absolute;
     left: 0;
+    top: 10.5vh;
 }
 .main_part{
     width: 100%;
-    height: 100vh;
     padding-left: 90px;
+    height: 100%;
 }
 .result_area{
     background-color: var(--main-color);
@@ -24,12 +26,17 @@
     width: 100%;
 }
 .title_area{
-    background-color: var(--sidebar-color);
     width: 100%;
     color: var(--text-color);
-    border-radius: 10px;
     flex: 0 1 100px;
 }
+.description-block{
+    background-color: var(--block-color);
+    padding: 20px;
+    margin-top: 40px;
+    border-radius: 10px;
+}
+
 .filter-grey{
     filter: invert(49%) sepia(4%) saturate(0%) hue-rotate(27deg) brightness(91%) contrast(95%);
 }

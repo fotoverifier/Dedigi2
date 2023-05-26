@@ -10,13 +10,6 @@ const SideBar = () =>{
         <div className="sidebar shadow-xl" > 
         <div className="flex justify-center ">
             <div className="my-8">
-                <Image
-                    src="/Logo.svg"
-                    alt="FotoVerifier Logo"
-                    width={70}
-                    height={24}
-                    priority
-                    />
                 <div className="flex justify-center my-5">
                     <div className="py-5">
                     {links.map((link) => {

@@ -3,13 +3,14 @@
 @tailwind utilities;
 
 :root {
-    --sidebar-color: #313131;
-    --background-color: #252525; 
+    --sidebar-color: #2F3044;
+    --background-color: #262837; 
     --text-color: white;
     --error-color: #FF0000;
     --text-highlight-color: #00FFFF;
-    --pressed-color: #4F4F4F;
+    --pressed-color: #41425D;
     --hover-color: #696969;
+    --block-color: #41425D;
 }
 
 :root.dark {
@@ -24,4 +25,5 @@
 
 body {
   background: var(--background-color);
+  color: var(--text-color);
 }
