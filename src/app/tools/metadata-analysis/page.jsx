@@ -15,7 +15,7 @@ const InformationPage = () => {
                 <div className="flex flex-row justify-center h-[80%] w-full">
                     <div className="flex flex-row justify-between w-[100%] ">
                         <CardPicture title="Your picture" icon="/ChangePicture.svg" widthPercent="40%" yourImage={globalImage}/>
-                        <MetaData title="Metadata" icon="/ChangePicture.svg" widthPercent="59%"/>
+                        <MetaData url={globalImage} title="Metadata" icon="/ChangePicture.svg" widthPercent="59%"/>
                     </div>
 
                 </div>

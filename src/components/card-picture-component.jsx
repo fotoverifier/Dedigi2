@@ -39,9 +39,9 @@ const CardPicture = ({title, icon, widthPercent="49.5%", yourImage})=>{
                     />
                 </div>
             </div>
-            <div class={"fixed z-10 overflow-y-auto top-[10%] w-full left-0 " + (hidden?"hidden":"")} id="modal">
-                <div class="flex items-center justify-center ">
-                    <div class="inline-block w-[50%] align-center rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:align-middle" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
+            <div className={"fixed z-10 overflow-y-auto top-[10%] w-full left-0 " + (hidden?"hidden":"")} id="modal">
+                <div className="flex items-center justify-center ">
+                    <div className="inline-block w-[50%] align-center rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:align-middle" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
                     <ImagePicker isModal={true} onClose={toggleModal}/>
                    
                     </div>

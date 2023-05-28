@@ -3,9 +3,34 @@ import Title from "@/components/title-component";
 import Image from "next/image";
 import CardPicture from "@/components/card-picture-component";
 import { useAppContext } from "@/components/context-component";
+import { useEffect, useState } from "react";
 const CloningDetectionPage = () => {
-
+    const [resultUrl, setResultUrl] = useState(null)
+    
     const {globalImage, setGlobalImage} = useAppContext()
+    useEffect(()=>{
+        const copyMoveDetection = async () => {
+  
+            const blob  = await fetch(globalImage).then(r => r.blob());
+            const formData = new FormData();
+              formData.append('image', blob, 'image.jpg');
+      
+              const requestOptions = {
+                method: 'POST',
+                body: formData,
+              };
+              fetch('https://www.fotoverifier.eu/api/copy-move', requestOptions)
+            .then((response) => response.blob())
+            .then((blob) => {
+                
+                var url = URL.createObjectURL(blob);
+                console.log(url)
+                setResultUrl(url);
+            }).catch(e=>console.log(e));
+          };
+          copyMoveDetection();
+            
+    },[])
     return (
         <div className="flex flex-col p-[1.5%] h-full" >
             <Title title={"Cloning Detection"} icon="/CloningDetection.svg" className="flex-none" />
@@ -16,7 +41,7 @@ const CloningDetectionPage = () => {
                 <div className="flex flex-row justify-center h-[80%] w-full">
                     <div className="flex flex-row justify-between w-[100%] ">
                         <CardPicture yourImage={globalImage} title="Your picture" icon="/ChangePicture.svg"/>
-                        <CardPicture yourImage={globalImage} title="Result" icon="/Question.svg"/>
+                        <CardPicture yourImage={resultUrl?resultUrl:""} title="Result" icon="/Question.svg"/>
                     </div>
 
                 </div>
