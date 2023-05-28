@@ -1,6 +1,6 @@
 const links = [
     {
-        href: "/tools/information",
+        href: "/tools/metadata-analysis",
         icon: "/Information.svg",
     },
     {

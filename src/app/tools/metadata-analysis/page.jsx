@@ -1,22 +1,21 @@
-'use client';
+'use client'
 import Title from "@/components/title-component";
-import Image from "next/image";
 import CardPicture from "@/components/card-picture-component";
+import MetaData from "@/components/meta-data-component";
 import { useAppContext } from "@/components/context-component";
-const CloningDetectionPage = () => {
-
+const InformationPage = () => {
     const {globalImage, setGlobalImage} = useAppContext()
     return (
         <div className="flex flex-col p-[1.5%] h-full" >
-            <Title title={"Cloning Detection"} icon="/CloningDetection.svg" className="flex-none" />
+            <Title title={"Metadata Analysis"} icon="/Information.svg" className="flex-none" />
             <div className="result_area flex flex-col grow justify-around">
                 <div className="description-block flex-none h-fit text-[1vw]">
-                    This tool can show <span className="text-red-600">copied areas</span> in an image even if they have been edited after pasting, such as rotation or resizing or change color.
+                    An informative picture is also a trustworthy one!
                 </div>
                 <div className="flex flex-row justify-center h-[80%] w-full">
                     <div className="flex flex-row justify-between w-[100%] ">
-                        <CardPicture yourImage={globalImage} title="Your picture" icon="/ChangePicture.svg"/>
-                        <CardPicture yourImage={globalImage} title="Result" icon="/Question.svg"/>
+                        <CardPicture title="Your picture" icon="/ChangePicture.svg" widthPercent="40%" yourImage={globalImage}/>
+                        <MetaData title="Metadata" icon="/ChangePicture.svg" widthPercent="59%"/>
                     </div>
 
                 </div>
@@ -26,4 +25,4 @@ const CloningDetectionPage = () => {
         </div>
     )
 }
-export default CloningDetectionPage;
+export default InformationPage;

@@ -1,10 +1,17 @@
+import ImagePicker from '@/components/image-picker-component';
 import Image from 'next/image'
+import "../styles/homepage-styles.css"
 import NavBar from '@/components/navbar-component';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowDown, faPlus } from '@fortawesome/free-solid-svg-icons';
+
 const HomePage = () => {
+  
   return (
-    <div className='h-[200vh] '>
+    <div className='h-[200vh] w-full'>
+      
+      <NavBar useInHome={true}/>
       <div className='relative h-fit'>
-        <NavBar useInHome={true}/>
           <Image src="/Background.svg"
                 alt="Background"
                 width={100}
@@ -14,27 +21,35 @@ const HomePage = () => {
                 priority>
                 
           </Image>
-          <div className='absolute left-[53%] top-[30%] pr-[200px] '>
-            <div className='text-5xl mb-7 font-bold'>
+          <div className='absolute left-[53%] top-[40%] pr-[10%] '>
+            <div className='text-[3vw] mb-[2%] font-bold'>
                 FotoVerifier
             </div>
-            <div className='text-xl mb-20'>
+            <div className='text-[1.1vw] mb-[5%]'>
               This is a tool for detecting image tampering using Digital Image Forensics techniques, along with the techniques are some other functionalities which further enhance the user's engagement. With the goals of creating an actual environment for interacting with different DIF methods, FotoVerifier was created.
             </div>
-            <a className='w-[200px] h-[50] border-2 rounded-md p-4 flex flex-row'>
-              <div className='text-2xl mr-2'>Get started</div>
-              
-              <Image src="/ArrowDown.svg"
-                alt="ArrowDown"
-                width={25}
-                height={25}
-                quality={100}
-                priority>
-                
-          </Image>
+            <a href='#start' className='w-[10.5vw] border-[0.2vw] rounded-md p-[2%] flex flex-row justify-between home-bg-btn'>
+              <div className='text-[1.3vw] font-bold'>Get started</div>
+              <div className='flex flex-col justify-center'>
+                <FontAwesomeIcon
+                    icon={faArrowDown}
+                    className='text-[1.3vw]'
+                />
+              </div>
             </a>
           </div>
       </div>
+        <div id="start"></div>
+        <div  className='flex flex-row justify-center text-[3vw] font-bold m-[5vh]'>
+          Get Started!
+        </div>
+        <div  className='flex flex-row justify-center w-full'>
+          <div className='w-[50%]'>
+            <ImagePicker/>
+          </div>
+        </div>
+        
+        
         
     </div>
   )

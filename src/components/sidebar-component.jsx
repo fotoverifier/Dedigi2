@@ -7,41 +7,37 @@ const SideBar = () =>{
     const pathname = usePathname();
     console.log(pathname)
     return (
-        <div className="sidebar shadow-xl" > 
-        <div className="flex justify-center ">
-            <div className="my-8">
-                <div className="flex justify-center my-5">
-                    <div className="py-5">
+        <div className="sidebar shadow-xl flex flex-col justify-center" > 
+        <div className="flex flex-col h-full mt-[100%]">
+
+       
+            <div className="flex flex-col justify-between h-[50%]">
+                   
                     {links.map((link) => {
                         const isActive = pathname.startsWith(link.href);
 
                         return (
                             <Link
-                                
+                                className="flex justify-center flex-row w-full"
                                 href={link.href}
                                 key={link.href}
                                 >
                                 <Image
                                     src={link.icon}
                                     alt={link.icon}
-                                    className={(!isActive ? ' filter-grey' : '') + ' my-10 ' }
-                                    width={35}
-                                    height={24}
+                                    className={(!isActive ? ' filter-grey' : '') + ' w-[50%]' }
+                                    width={25}
+                                    height={2}
                                     priority
                                 />
                             </Link>
                         );
                         })}
 
-                    </div>
+              
                     
                 </div>
-                
-            </div>
-            
-            
-        </div>
-             
+                </div>
         </div>
     )
 }

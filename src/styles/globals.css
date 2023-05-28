@@ -6,11 +6,16 @@
     --sidebar-color: #2F3044;
     --background-color: #262837; 
     --text-color: white;
+    --text-invert-color: black;
     --error-color: #FF0000;
     --text-highlight-color: #00FFFF;
     --pressed-color: #41425D;
-    --hover-color: #696969;
+    --hover-color: #ff4800;
     --block-color: #41425D;
+    --low-light-text-color: rgb(206, 206, 206);
+    --primary-btn-color: #3C8BB8;
+    --disabled-color: grey;
+
 }
 
 :root.dark {
@@ -20,10 +25,18 @@
   --error-color: #FF0000;
   --text-highlight-color: #00FFFF;
   --pressed-color: #4F4F4F;
-  --hover-color: #696969;
+  --hover-color: #e15301;
+  --block-color: #41425D;
+  --low-light-text-color: rgb(147, 147, 147);
+  --primary-btn-color: #3C8BB8;
+  --disabled-color: grey;
 }
 
 body {
   background: var(--background-color);
   color: var(--text-color);
+  width: 100%;
+}
+html{
+  scroll-behavior: smooth;
 }

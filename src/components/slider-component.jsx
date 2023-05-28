@@ -554,7 +554,19 @@ class RangeSlider extends PureComponent {
         <div ref={this.thumb[0]} role='slider' className='range-slider__thumb' data-lower />
         
         <div ref={this.thumb[1]} role='slider' className='range-slider__thumb  relative' id="pointer" data-upper >
-        <div className=" w-[50px] absolute top-[-30px]" id="slider-hint" style={{left: "-13px"}} >a</div></div>
+          <div className="absolute top-[-130%] " id="slider-hint" style={{left: "-80%"}} >
+            <div className='slider-hint-child flex flex-row justify-center text-[0.8vw] rounded-md py-[2%] w-[3.5vw] '>
+              {this.props.percent}  
+            </div>
+            <div className='flex flex-row justify-center '>
+              <div className="w-0 h-0 slider-hint-child-triangle border-l-[1vh] border-l-transparent
+                border-t-[1.5vh] 
+                border-r-[1vh] border-r-transparent"/>
+            </div>
+            
+          </div>
+         
+        </div>
         <div ref={this.range} className='range-slider__range' />
       </div>
     )
