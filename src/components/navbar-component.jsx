@@ -2,7 +2,7 @@
 import "../styles/navbar-styles.css"
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 const NavBar = ({useInHome=false}) =>{
     const [changeColor, setChangeColor] = useState(false)
     const onScroll = () =>{
@@ -15,9 +15,13 @@ const NavBar = ({useInHome=false}) =>{
         }
        
     }
-    if (useInHome){
-        window.addEventListener('scroll', onScroll)
-    }
+    useEffect(() => {
+        // window is accessible here.
+        if (useInHome)
+            window.addEventListener('scroll', onScroll);
+        
+      }, [useInHome]);
+    
     return (
         <div className= "navbar sticky z-50 top-0" style={{backgroundColor: useInHome && !changeColor ? "transparent" : ""}}>
             <Link href="/" className="flex flex-col justify-center h-full ml-[5%]">
