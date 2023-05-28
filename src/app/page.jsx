@@ -26,7 +26,7 @@ const HomePage = () => {
                 FotoVerifier
             </div>
             <div className='text-[1.1vw] mb-[5%]'>
-              This is a tool for detecting image tampering using Digital Image Forensics techniques, along with the techniques are some other functionalities which further enhance the user's engagement. With the goals of creating an actual environment for interacting with different DIF methods, FotoVerifier was created.
+              This is a tool for detecting image tampering using Digital Image Forensics techniques, along with the techniques are some other functionalities which further enhance the user&apos;s engagement. With the goals of creating an actual environment for interacting with different DIF methods, FotoVerifier was created.
             </div>
             <a href='#start' className='w-[10.5vw] border-[0.2vw] rounded-md p-[2%] flex flex-row justify-between home-bg-btn'>
               <div className='text-[1.3vw] font-bold'>Get started</div>
