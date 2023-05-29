@@ -3,7 +3,8 @@ import "../styles/card-picture-styles.css"
 import Image from "next/image";
 import '../styles/homepage-styles.css'
 import ImagePicker from "./image-picker-component";
-const CardPicture = ({title, icon, widthPercent="49.5%", yourImage})=>{
+import LoadingSpinner from "./loading-spinner-component";
+const CardPicture = ({title, icon, widthPercent="49.5%", yourImage, id})=>{
     const [hidden, setHidden] = useState(true)
     const toggleModal = ()=> { setHidden(!hidden);}
     return (
@@ -27,16 +28,23 @@ const CardPicture = ({title, icon, widthPercent="49.5%", yourImage})=>{
                     
                 </div>
             </div>
-            <div className="flex flex-col justify-center h-[90%] relative ">
+            <div className="flex flex-col justify-center h-[90%] relative w-full ">
                 <div className="flex flex-row justify-center ">
-                    <Image
-                        src={yourImage}
-                        alt="Your Image"
-                        layout='fill'
-                        objectFit='contain'
-                        className="p-[2%]"
-                        priority
-                    />
+                    {
+                        yourImage?
+                        <Image
+                            id={id}
+                            src={yourImage}
+                            alt="Your Image"
+                            layout='fill'
+                            objectFit='contain'
+                            className="p-[2%]"
+                            priority
+                        />
+                        :
+                        <LoadingSpinner/>
+                    }
+                    
                 </div>
             </div>
             <div className={"fixed z-10 overflow-y-auto top-[10%] w-full left-0 " + (hidden?"hidden":"")} id="modal">

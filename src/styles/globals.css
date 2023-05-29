@@ -18,7 +18,7 @@
 
 }
 
-:root.dark {
+:root.light {
   --sidebar-color: #313131;
   --background-color: #fcfcfc; 
   --text-color: white;

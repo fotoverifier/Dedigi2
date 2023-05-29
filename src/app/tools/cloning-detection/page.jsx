@@ -4,13 +4,14 @@ import Image from "next/image";
 import CardPicture from "@/components/card-picture-component";
 import { useAppContext } from "@/components/context-component";
 import { useEffect, useState } from "react";
+import CardPictureResult from "@/components/card-picture-result-component";
 const CloningDetectionPage = () => {
-    const [resultUrl, setResultUrl] = useState(null)
     
-    const {globalImage, setGlobalImage} = useAppContext()
+    const {globalImage, setGlobalImage, cloningDetectionResultUrl, setCloningDetectionResultUrl,
+        changeImageTrigger, setChangeImageTrigger} = useAppContext()
     useEffect(()=>{
         const copyMoveDetection = async () => {
-  
+            console.log("call")
             const blob  = await fetch(globalImage).then(r => r.blob());
             const formData = new FormData();
               formData.append('image', blob, 'image.jpg');
@@ -24,13 +25,12 @@ const CloningDetectionPage = () => {
             .then((blob) => {
                 
                 var url = URL.createObjectURL(blob);
-                console.log(url)
-                setResultUrl(url);
+                setCloningDetectionResultUrl(url);
             }).catch(e=>console.log(e));
           };
           copyMoveDetection();
             
-    },[])
+    },[globalImage])
     return (
         <div className="flex flex-col p-[1.5%] h-full" >
             <Title title={"Cloning Detection"} icon="/CloningDetection.svg" className="flex-none" />
@@ -41,7 +41,7 @@ const CloningDetectionPage = () => {
                 <div className="flex flex-row justify-center h-[80%] w-full">
                     <div className="flex flex-row justify-between w-[100%] ">
                         <CardPicture yourImage={globalImage} title="Your picture" icon="/ChangePicture.svg"/>
-                        <CardPicture yourImage={resultUrl?resultUrl:""} title="Result" icon="/Question.svg"/>
+                        <CardPictureResult yourImage={cloningDetectionResultUrl} title="Result" icon="/Question.svg"/>
                     </div>
 
                 </div>

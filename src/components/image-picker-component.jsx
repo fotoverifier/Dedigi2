@@ -1,9 +1,12 @@
 "use client";
 import { useState,useRef } from 'react';
+import { faX } from '@fortawesome/free-solid-svg-icons';
 import { useAppContext } from '@/components/context-component';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import Image from 'next/image';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const ImagePicker = ({isModal=false, onClose = null})=>{
+    const path = usePathname();
      // drag state
     const [dragActive, setDragActive] = useState(false);
     // ref
@@ -56,24 +59,31 @@ const ImagePicker = ({isModal=false, onClose = null})=>{
     }
     const analyzeClick = (isUrl)=>{
         if (isUrl && url!==""){
-        setGlobalImage(url);
-        router.push('/tools/metadata-analysis')
+          setGlobalImage(url);
+          if (path === '/')
+            router.push('/tools/metadata-analysis')
+          
         }
         else
         if(image){
             setGlobalImage(image);
-            router.push('/tools/metadata-analysis');
-        }
+            if (path === '/')
+              router.push('/tools/metadata-analysis');
             
+        }
+        if (isModal)
+          onClose()
     }
     const router = useRouter();
     
     const {globalImage, setGlobalImage} = useAppContext()
-    return(<div className={'p-[2vw] ' + (isModal?" modal ":"")}>
+    return(<div className={'p-[1.5vw] ' + (isModal?" modal ":"")}>
             {
                 isModal?
-                <div className='flex flex-row justify-end w-full'>
-                    <button onClick={()=>onClose()} >x</button>
+                <div className='flex flex-row justify-end w-full close-modal-btn'>
+                    <button onClick={()=>onClose()} className='mb-[1%]' >
+                      <FontAwesomeIcon icon={faX} width={15} height={15} className='w-[1.3vw] h-[1.3vw]' />
+                    </button>
                 </div>
                 :null
             }

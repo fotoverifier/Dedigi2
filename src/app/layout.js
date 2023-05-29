@@ -1,3 +1,4 @@
+
 import '../styles/globals.css'
 import { Inter } from 'next/font/google'
 // import Font Awesome CSS
@@ -17,8 +18,8 @@ export const metadata = {
   },
 }
 import { AppWrapper } from '@/components/context-component';
-
 export default function RootLayout({ children }) {
+  
   return (
     <html lang="en" className=''>
       <AppWrapper>

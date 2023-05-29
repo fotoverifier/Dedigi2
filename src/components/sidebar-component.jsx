@@ -3,9 +3,19 @@ import Image from "next/image";
 import { usePathname } from 'next/navigation';
 import links from "@/utils/navlinks";
 import Link from "next/link";
+import { useAppContext } from "./context-component";
 const SideBar = () =>{
+    const {currentSplicingTool} = useAppContext()
     const pathname = usePathname();
-    console.log(pathname)
+    const isActiveCheck = (link)=>{
+        return pathname.startsWith(link)
+    }
+    const standardSplicingLink = (link)=>{
+        if (link.startsWith("/tools/image-splicing-detection")){
+            return link + '/' + currentSplicingTool
+        }
+        return link;
+    }
     return (
         <div className="sidebar shadow-xl flex flex-col justify-center" > 
         <div className="flex flex-col h-full mt-[100%]">
@@ -14,12 +24,12 @@ const SideBar = () =>{
             <div className="flex flex-col justify-between h-[50%]">
                    
                     {links.map((link) => {
-                        const isActive = pathname.startsWith(link.href);
+                        const isActive = isActiveCheck(link.href);
 
                         return (
                             <Link
                                 className="flex justify-center flex-row w-full"
-                                href={link.href}
+                                href={standardSplicingLink(link.href)}
                                 key={link.href}
                                 >
                                 <Image

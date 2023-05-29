@@ -134,3 +134,9 @@
 .low-light-text{
   color: var(--low-light-text-color);
 }
+.close-modal-btn{
+  color: var(--text-color);
+}
+.close-modal-btn:hover{
+  color: var(--primary-btn-color);
+}
