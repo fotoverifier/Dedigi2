@@ -1,14 +1,5 @@
 "use client";
 import Title from "@/components/title-component";
-import NextImage from "next/image";
-import { useEffect, useState } from "react";
-import CardPicture from "@/components/card-picture-component";
-import RangeSlider from "@/components/slider-component";
-import { useAppContext } from "@/components/context-component"
-import JPEGGhost from "@/utils/methods/JPEGGhost";
-import CardPictureCanvas from "@/components/card-picture-canvas-component";
-import JPEGGhostHandler from "@/components/JPEG-ghost-handler-component";
-import CFAHandler from "@/components/CFA-handler-component";
 const ImageSplicingDetectionLayout = ({children}) => {
     return (
       

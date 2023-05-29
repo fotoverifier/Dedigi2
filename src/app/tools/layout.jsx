@@ -9,9 +9,7 @@ import { useEffect,useState } from "react";
 const ToolsLayout = ({ children })=> {
   const {globalImage, setGlobalImage} = useAppContext()
   const router = useRouter()
-  if (!globalImage){
-    router.push('/')
-  }
+  
   const [cvState, setCvState] = useState(false);
   const [npState, setNpState] = useState(false);
   function onOpenCvReady() {
@@ -22,6 +20,9 @@ const ToolsLayout = ({ children })=> {
     setNpState(true);
   }
   useEffect(() => {
+    if (!globalImage){
+      router.push('/')
+    }
     async function fetchLib() {
       await injectScript('opencv-injected-js', '/libs/opencv.js')
         .then(() => onOpenCvReady())
@@ -33,7 +34,7 @@ const ToolsLayout = ({ children })=> {
     fetchLib();
   }, [globalImage]);
   return (
-         cvState && npState?
+        cvState && npState?
             <div className=" my-main-container flex flex-col">
             
               <NavBar useInHome={false}/>

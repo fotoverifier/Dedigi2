@@ -5,7 +5,7 @@ import { useAppContext } from "@/components/context-component";
 import { useState } from "react";
 import PopupConfig from "@/components/popup-config-component";
 import CardPictureResult from "@/components/card-picture-result-component";
-const CFAPage = ({})=>{
+const CFAPage = ()=>{
     const [loadResult, setLoadResult] = useState(false)
     const { globalImage, isOpenedPopup, CFAResultUrl, setCurrentSplicingTool} = useAppContext();
     setCurrentSplicingTool('color-filter-array')

@@ -4,7 +4,7 @@ import CardPictureCanvas from "@/components/card-picture-canvas-component"
 import { useAppContext } from "@/components/context-component";
 import { useState } from "react";
 import PopupConfig from "@/components/popup-config-component";
-const JPEGGhostPage = ({})=>{
+const JPEGGhostPage = ()=>{
     const [loadResult, setLoadResult] = useState(false)
     const { globalImage, isOpenedPopup, setCurrentSplicingTool} = useAppContext();
     setCurrentSplicingTool('jpeg-ghost')
