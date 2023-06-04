@@ -173,7 +173,7 @@ const ImagePicker = ({isModal=false, onClose = null})=>{
                   <input type='text' placeholder='Type the image URL' value={url} className='url-input w-[35vw] bg-transparent p-[2%]' onChange={onUrlChange}/>
               </div>
               
-              <div className={'text-[1vw] flex flex-row justify-center home-btn rounded-r-md w-[10vw] h-[7vh] ' +  (url === "" || error? "inactive" : "")}>
+              <div onClick={()=>analyzeClick(true)} className={'text-[1vw] flex flex-row justify-center home-btn rounded-r-md w-[10vw] h-[7vh] ' +  (url === "" || error? "inactive" : "")}>
                     <Image 
                       width={25} 
                       alt="Analyze.svg" 
@@ -181,7 +181,7 @@ const ImagePicker = ({isModal=false, onClose = null})=>{
                       height={25} 
                       className=''
                       src='/Analyze.svg'/>
-                    <div onClick={()=>analyzeClick(true)} className='flex flex-col justify-center text-[1vw] ml-[0.5vw] font-bold' >
+                    <div  className='flex flex-col justify-center text-[1vw] ml-[0.5vw] font-bold' >
                       Analyze 
                     </div>
                 </div>
