@@ -188,7 +188,8 @@ async function jpegAnalysis(imageData) {
 
 async function getImageDataFromURL(imageURL) {
   let output = { error: true, data: "Something error" };
-  await fetch(imageURL)
+  try {
+    await fetch(imageURL)
     .then((response) => response.blob())
     .then(
       (blob) =>
@@ -207,6 +208,10 @@ async function getImageDataFromURL(imageURL) {
       // console.log(`getImageDataFromURL error`, error);
       output = { error: true, data: error };
     });
+  } catch (error) {
+    output = { error: true, data: error };
+  }
+  
   return output;
 }
 

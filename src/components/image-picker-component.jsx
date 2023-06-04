@@ -5,6 +5,7 @@ import { useAppContext } from '@/components/context-component';
 import { useRouter, usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { getImageDataFromURL } from '@/utils/image';
 const ImagePicker = ({isModal=false, onClose = null})=>{
     const path = usePathname();
      // drag state
@@ -54,14 +55,28 @@ const ImagePicker = ({isModal=false, onClose = null})=>{
     const [image, setImage] = useState(null)
 
     const [url, setUrl] = useState("")
+    const [error, setError] = useState(null)
     const onUrlChange = (e)=>{
+        setError(null)
         setUrl(e.target.value)
     }
-    const analyzeClick = (isUrl)=>{
+    const analyzeClick = async(isUrl)=>{
+     
         if (isUrl && url!==""){
-          setGlobalImage(url);
-          if (path === '/')
-            router.push('/tools/metadata-analysis')
+          fetch(url)
+          .then((response) => {
+            setGlobalImage(url);
+              if (path === '/')
+                router.push('/tools/metadata-analysis')
+              if (isModal)
+                onClose()
+          })
+          .catch(e=>{
+            setError("Failed to fetch image!")
+          })
+         
+         
+          
           
         }
         else
@@ -69,10 +84,10 @@ const ImagePicker = ({isModal=false, onClose = null})=>{
             setGlobalImage(image);
             if (path === '/')
               router.push('/tools/metadata-analysis');
-            
+              if (isModal)
+              onClose()
         }
-        if (isModal)
-          onClose()
+        
     }
     const router = useRouter();
     
@@ -157,7 +172,8 @@ const ImagePicker = ({isModal=false, onClose = null})=>{
               border-t-[0.2vw] border-b-[0.2vw] url-input'>
                   <input type='text' placeholder='Type the image URL' value={url} className='url-input w-[35vw] bg-transparent p-[2%]' onChange={onUrlChange}/>
               </div>
-              <div className={'text-[1vw] flex flex-row justify-center home-btn rounded-r-md w-[10vw] h-[7vh] ' +  (url === ""? "inactive" : "")}>
+              
+              <div className={'text-[1vw] flex flex-row justify-center home-btn rounded-r-md w-[10vw] h-[7vh] ' +  (url === "" || error? "inactive" : "")}>
                     <Image 
                       width={25} 
                       alt="Analyze.svg" 
@@ -170,7 +186,13 @@ const ImagePicker = ({isModal=false, onClose = null})=>{
                     </div>
                 </div>
             </div>
+            
         </div>
+        {
+          error?<div className='flex flex-row justify-center text-red-500'>Failed to fetch image!</div>
+          :null
+        }
+        
     </div>
         
         

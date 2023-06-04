@@ -10,14 +10,20 @@
     background-color: var(--sidebar-color);
     color: var(--text-color);
     height: 92vh;
-    width: 3.5vw;
+    width: 4vw;
     position: absolute;
     left: 0;
     top: 8vh;
 }
+.sidebar-item:hover .sidebar-tooltip{
+  visibility: visible;
+}
+.sidebar-tooltip{
+  visibility: hidden;
+}
 .main_part{
     width: 100%;
-    padding-left: 3.5vw;
+    padding-left: 4vw;
     height: 100%;
 }
 .result_area{

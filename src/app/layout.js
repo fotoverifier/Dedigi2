@@ -1,4 +1,3 @@
-
 import '../styles/globals.css'
 import { Inter } from 'next/font/google'
 // import Font Awesome CSS
@@ -24,6 +23,7 @@ export default function RootLayout({ children }) {
     <html lang="en" className=''>
       <AppWrapper>
       <body className={inter.className}>{children}</body></AppWrapper>
+  
     </html>
   )
 }
