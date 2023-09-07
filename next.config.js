@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-output: 'standalone',
+    transpilePackages: ['@acme/ui', 'lodash-es'],
+    output: 'standalone',
   images: {
     remotePatterns: [
         {
