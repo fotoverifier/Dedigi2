@@ -7,12 +7,13 @@ name: Docker-build
 
 on:
   push:
-    branches: [ "feature/gitaction" ] # for testing only
-    # Publish semver tags as releases.
-    tags: [ 'v*.*' ]
+    branches: ["main"]
+  #   branches: [ "feature/gitaction" ] # for testing only
+  #   # Publish semver tags as releases.
+  #   tags: [ 'v*.*' ]
   workflow_dispatch:
-  # pull_request:
-    # branches: [ "main" ]
+  # # pull_request:
+  #   # branches: [ "main" ]
 
 env:
   # Use docker.io for Docker Hub if empty
@@ -22,6 +23,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.message, 'build all')
     strategy:
       fail-fast: false
       matrix:
@@ -69,6 +71,10 @@ jobs:
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
           images: ${{ env.REGISTRY }}/${{ matrix.imagename }}
+      - name: Extract Commit SHA
+        shell: bash
+        run: |
+          echo "sha_short=$(git rev-parse --short "$GITHUB_SHA")" >> "$GITHUB_ENV"
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
@@ -78,7 +84,7 @@ jobs:
         with:
           context: ${{ matrix.dockerpath }}
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ matrix.imagename }}:${{ github.sha }}, ${{ matrix.imagename }}:latest
+          tags: ${{ matrix.imagename }}:${{ env.sha_short }}, ${{ matrix.imagename }}:latest
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -93,8 +99,29 @@ jobs:
         if: ${{ github.event_name != 'pull_request' }}
         env:
           # https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#using-an-intermediate-environment-variable
-          TAGS: ${{ steps.meta.outputs.tags }}
+          TAGS: ${{ matrix.imagename }}:${{ env.sha_short }}, ${{ matrix.imagename }}:latest
           DIGEST: ${{ steps.build-and-push.outputs.digest }}
         # This step uses the identity token to provision an ephemeral certificate
         # against the sigstore community Fulcio instance.
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+
+      - name: Notify slack about new image
+        id: slack
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          # For posting a rich message using Block Kit
+          payload: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "Image *${{ matrix.imagename }}:${{ env.sha_short }}* has been released, check it out! @channel"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
