@@ -1,4 +1,5 @@
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, UploadFile, Form
+from typing import Annotated
 from fastapi.responses import JSONResponse
 from pathvalidate import sanitize_filepath
 from PIL import Image
@@ -39,7 +40,7 @@ def jpeg_ghost(img, quality):
 
 
 @app.post("/store-and-process-image")
-async def store_and_process(file: UploadFile = File(...), quality: int = 60):
+async def store_and_process(file: Annotated[UploadFile, File()], quality: Annotated[int, Form()]):
     try:
         image = await file.read()
         img = Image.open(io.BytesIO(image)).convert('RGB')
@@ -54,7 +55,7 @@ async def store_and_process(file: UploadFile = File(...), quality: int = 60):
         response.update({"path_saved": path_saved})
         img_np = np.array(img, np.uint8)
         result = Image.fromarray(jpeg_ghost(img_np, quality))
-        processed_path_saved = f"ProcessedImage/{sha256(image + quality.to_bytes(1, 'big')).hexdigest() }.jpg"
+        processed_path_saved = f"ProcessedImage/{sha256(image + quality.to_bytes(1, 'big')).hexdigest()}.jpg"
         result.save(processed_path_saved, "JPEG")
 
         response.update({"result_path": processed_path_saved})
@@ -65,7 +66,7 @@ async def store_and_process(file: UploadFile = File(...), quality: int = 60):
 
 
 @app.post("/process-only-image")
-async def process_only(file_name: str, quality: int | None = 60):
+async def process_only(file_name: Annotated[str, Form()], quality: Annotated[int, Form()]):
     try:
         if not os.path.exists(f"Image/{file_name}"):
             return JSONResponse({"message": "Image doesn't exists."})
@@ -78,7 +79,7 @@ async def process_only(file_name: str, quality: int | None = 60):
         
         img_np = np.array(img, np.uint8)
         result = Image.fromarray(jpeg_ghost(img_np, quality))
-        processed_path_saved = f"ProcessedImage/{sha256(image.getvalue() + quality.to_bytes(1, 'big')).hexdigest() }.jpg"
+        processed_path_saved = f"ProcessedImage/{sha256(image.getvalue() + quality.to_bytes(1, 'big')).hexdigest()}.jpg"
         result.save(processed_path_saved, "JPEG")
 
         response.update({"result_path": processed_path_saved})
