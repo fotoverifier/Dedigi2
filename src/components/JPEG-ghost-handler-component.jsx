@@ -11,7 +11,7 @@ const JPEGGhostHandler = ({onChange})=>{
         const blob  = await fetch(globalImage).then(r => r.blob());
         const formData = new FormData();
         formData.append('file', blob, 'image.jpg');
-        formData.append('quality', 90);
+        formData.append('quality', quality);
         const requestOptions = {
             method: 'POST',
             body: formData,

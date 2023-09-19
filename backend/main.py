@@ -1,4 +1,5 @@
-from fastapi import FastAPI, File, UploadFile, Request
+from fastapi import FastAPI, File, UploadFile, Form
+from typing import Annotated
 from fastapi.responses import JSONResponse
 from pathvalidate import sanitize_filepath
 from PIL import Image
@@ -48,15 +49,9 @@ def jpeg_ghost(img, quality):
 
     return normalized
 
-@app.middleware("http")
-async def TestCustomMiddleware(request: Request, call_next):
-    print("Middleware works!", request.headers)
-    receive_ = await request.body()
-    print(receive_)
-    response = await call_next(request)
-    return response
+
 @app.post("/store-and-process-image")
-async def store_and_process(file: UploadFile = File(...), quality: int = 60):
+async def store_and_process(file: Annotated[UploadFile, File()], quality: Annotated[int, Form()]):
     try:
         print(quality)
         image = await file.read()
@@ -83,7 +78,7 @@ async def store_and_process(file: UploadFile = File(...), quality: int = 60):
 
 
 @app.post("/process-only-image")
-async def process_only(file_name: str, quality: int | None = 60):
+async def process_only(file_name: Annotated[str, Form()], quality: Annotated[int, Form()]):
     try:
         if not os.path.exists(f"static/Image/{file_name}"):
             return JSONResponse({"message": "Image doesn't exists."})
