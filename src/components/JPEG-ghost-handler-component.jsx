@@ -1,32 +1,43 @@
 'use-client';
+import { URL_SERVER } from "@/utils/constant";
 import { useAppContext } from "./context-component";
 import RangeSlider from "./slider-component"
 import { useState, useEffect } from "react";
 const JPEGGhostHandler = ({onChange})=>{
     const {jpegQuality, setJpegQuality, globalImage, changeImageTrigger, setChangeImageTrigger, JPEGGhostResultUrl, setJPEGGhostResultUrl} = useAppContext();
     var currentVal = jpegQuality[1];
-    const JPEGGhost = async () =>{
+    const JPEGGhost = async (quality) =>{
+        console.log("jpg " + quality)
         const blob  = await fetch(globalImage).then(r => r.blob());
         const formData = new FormData();
         formData.append('file', blob, 'image.jpg');
-        formData.append('quality', "70");
+        formData.append('quality', 90);
         const requestOptions = {
             method: 'POST',
             body: formData,
+            headers: {
+                Accept: "application/json",
+              },
         };
+
         console.log("post")
-        fetch('http://localhost:8000/upload-image/', requestOptions)
-        .then((response) => response.blob())
-        .then((blob) => {
-            var url = URL.createObjectURL(blob);
-            console.log(blob)
-            setJPEGGhostResultUrl(url)
-        }).catch(e=>console.log(e));
+        fetch(URL_SERVER + 'store-and-process-image/', requestOptions)
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data);
+            setJPEGGhostResultUrl(URL_SERVER + data.result_path)
+        })
+        // .then((blob) => {
+        //     var url = URL.createObjectURL(blob);
+        //     console.log(blob)
+        //     setJPEGGhostResultUrl(url)
+        // })
+        .catch(e=>console.log(e));
     }
-    const onLoadJPEGGhost=()=>{
+    const onLoadJPEGGhost=(quality)=>{
         if (changeImageTrigger === true){
             setChangeImageTrigger(false)
-            JPEGGhost();
+            
         }
        
     }
@@ -39,14 +50,14 @@ const JPEGGhostHandler = ({onChange})=>{
     const onMouseUp = ()=>{
         console.log('up')
         if (globalImage){
-           // onChange(currentVal/100,globalImage);
+            JPEGGhost(currentVal);
         }
     }
     document.body.onmouseup = onMouseUp;
     useEffect(()=>{
         if (globalImage){
             //onChange(jpegQuality[1]/100,globalImage);
-            onLoadJPEGGhost();
+            onLoadJPEGGhost(jpegQuality[1]);
         }
         return () => {
             console.log("counter unmounted");

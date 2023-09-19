@@ -1,18 +1,20 @@
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, UploadFile, Request
 from fastapi.responses import JSONResponse
+from pathvalidate import sanitize_filepath
 from PIL import Image
 import io
 import uvicorn
 import cv2
 import numpy as np
-from hashlib import md5
+from hashlib import md5, sha256
 import os
-
+from flask_cors import CORS
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI() # gọi constructor và gán vào biến app
 
-
 origins = ["*"]
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -20,19 +22,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-@app.get("/") # giống flask, khai báo phương thức get và url
-async def root(): # do dùng ASGI nên ở đây thêm async, nếu bên thứ 3 không hỗ trợ thì bỏ async đi
-    return {"message": "Hello World"}
 
-@app.get("/testing/normal_test") # giống flask, khai báo phương thức get và url
-async def foo1(): # do dùng ASGI nên ở đây thêm async, nếu bên thứ 3 không hỗ trợ thì bỏ async đi
-    return {"message": f"This is just a normal test"}
-
-@app.get("/testing/{test_here:path}") # giống flask, khai báo phương thức get và url
-async def foo2(test_here: str): # do dùng ASGI nên ở đây thêm async, nếu bên thứ 3 không hỗ trợ thì bỏ async đi
-    return {"message": f"This is different {test_here}"}
-
-
+app.mount("/static", StaticFiles(directory="static"), name="static")
 def jpeg_ghost(img, quality):
     smoothing_b = 17
     offset = (smoothing_b-1)//2
@@ -57,27 +48,63 @@ def jpeg_ghost(img, quality):
 
     return normalized
 
-@app.post("/upload-image/")
-async def upload_image(file: UploadFile = File(...), quality: int = 60):
+@app.middleware("http")
+async def TestCustomMiddleware(request: Request, call_next):
+    print("Middleware works!", request.headers)
+    receive_ = await request.body()
+    print(receive_)
+    response = await call_next(request)
+    return response
+@app.post("/store-and-process-image")
+async def store_and_process(file: UploadFile = File(...), quality: int = 60):
     try:
+        print(quality)
         image = await file.read()
         img = Image.open(io.BytesIO(image)).convert('RGB')
-        path_saved = f"Image/{md5(image + quality.to_bytes(1, 'big')).hexdigest()}.jpg"
+        path_saved = f"static/Image/{sha256(image).hexdigest()}.jpg"
+        response = {}
         
         if os.path.exists(path_saved):
-            return JSONResponse({"message": "Image already uploaded with same quality", "image_path": path_saved})
+            response.update({"message": "Image already uploaded"})
+        else:
+            img.save(path_saved, "JPEG")        
         
+        response.update({"path_saved": path_saved})
         img_np = np.array(img, np.uint8)
-        
-        
         result = Image.fromarray(jpeg_ghost(img_np, quality))
-        
-        
-        result.save(path_saved, "JPEG")
-        print(JSONResponse({"message": "Image uploaded successfully", "image_path": path_saved}))
-        return JSONResponse({"message": "Image uploaded successfully", "image_path": path_saved})
+        processed_path_saved = f"static/ProcessedImage/{sha256(image + quality.to_bytes(1, 'big')).hexdigest() }.jpg"
+        result.save(processed_path_saved, "JPEG")
+
+        response.update({"result_path": processed_path_saved})
+        print(response)
+        return JSONResponse(response)
     except Exception as e:
         return JSONResponse({"error": str(e)})
+
+
+@app.post("/process-only-image")
+async def process_only(file_name: str, quality: int | None = 60):
+    try:
+        if not os.path.exists(f"static/Image/{file_name}"):
+            return JSONResponse({"message": "Image doesn't exists."})
+        image = io.BytesIO()
+        img = Image.open(f"static/Image/{file_name}").convert('RGB')
+        img.save(image, format='JPEG')
+        
+        response = {}
+        response.update({"fetched_image": "success"})
+        
+        img_np = np.array(img, np.uint8)
+        result = Image.fromarray(jpeg_ghost(img_np, quality))
+        processed_path_saved = f"static/ProcessedImage/{sha256(image.getvalue() + quality.to_bytes(1, 'big')).hexdigest() }.jpg"
+        result.save(processed_path_saved, "JPEG")
+
+        response.update({"result_path": processed_path_saved})
+
+        return JSONResponse(response)
+    except Exception as e:
+        return JSONResponse({"error": str(e)})
+
 
 
 if __name__ == "__main__":
