@@ -3,9 +3,33 @@ import { useAppContext } from "./context-component";
 import RangeSlider from "./slider-component"
 import { useState, useEffect } from "react";
 const JPEGGhostHandler = ({onChange})=>{
-    const {jpegQuality, setJpegQuality, globalImage, changeImageTrigger, setChangeImageTrigger} = useAppContext();
+    const {jpegQuality, setJpegQuality, globalImage, changeImageTrigger, setChangeImageTrigger, JPEGGhostResultUrl, setJPEGGhostResultUrl} = useAppContext();
     var currentVal = jpegQuality[1];
-    
+    const JPEGGhost = async () =>{
+        const blob  = await fetch(globalImage).then(r => r.blob());
+        const formData = new FormData();
+        formData.append('file', blob, 'image.jpg');
+        formData.append('quality', "70");
+        const requestOptions = {
+            method: 'POST',
+            body: formData,
+        };
+        console.log("post")
+        fetch('http://localhost:8000/upload-image/', requestOptions)
+        .then((response) => response.blob())
+        .then((blob) => {
+            var url = URL.createObjectURL(blob);
+            console.log(blob)
+            setJPEGGhostResultUrl(url)
+        }).catch(e=>console.log(e));
+    }
+    const onLoadJPEGGhost=()=>{
+        if (changeImageTrigger === true){
+            setChangeImageTrigger(false)
+            JPEGGhost();
+        }
+       
+    }
     
     const onChangeInput = (val)=>{
         setJpegQuality(val);
@@ -15,13 +39,14 @@ const JPEGGhostHandler = ({onChange})=>{
     const onMouseUp = ()=>{
         console.log('up')
         if (globalImage){
-            onChange(currentVal/100,globalImage);
+           // onChange(currentVal/100,globalImage);
         }
     }
     document.body.onmouseup = onMouseUp;
     useEffect(()=>{
         if (globalImage){
-            onChange(jpegQuality[1]/100,globalImage);
+            //onChange(jpegQuality[1]/100,globalImage);
+            onLoadJPEGGhost();
         }
         return () => {
             console.log("counter unmounted");

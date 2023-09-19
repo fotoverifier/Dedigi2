@@ -7,9 +7,19 @@ import cv2
 import numpy as np
 from hashlib import md5
 import os
+
+from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI() # gọi constructor và gán vào biến app
 
 
+origins = ["*"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 @app.get("/") # giống flask, khai báo phương thức get và url
 async def root(): # do dùng ASGI nên ở đây thêm async, nếu bên thứ 3 không hỗ trợ thì bỏ async đi
     return {"message": "Hello World"}
@@ -64,7 +74,7 @@ async def upload_image(file: UploadFile = File(...), quality: int = 60):
         
         
         result.save(path_saved, "JPEG")
-        
+        print(JSONResponse({"message": "Image uploaded successfully", "image_path": path_saved}))
         return JSONResponse({"message": "Image uploaded successfully", "image_path": path_saved})
     except Exception as e:
         return JSONResponse({"error": str(e)})

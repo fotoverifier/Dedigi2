@@ -17,7 +17,8 @@ const PopupConfig = ({tabName, setLoadResult})=>{
     const getComponentByTabTabName = ()=>{
         if (tabName === 'jpeg-ghost'){
             return(
-                <JPEGGhostHandler onChange={jpegGhostOnChangeSlider}/>
+              //  <JPEGGhostHandler onChange={jpegGhostOnChangeSlider}/>
+                <JPEGGhostHandler />
             )
         }
         if (tabName === 'color-filter-array'){
