@@ -6,38 +6,68 @@ import { useState, useEffect } from "react";
 const JPEGGhostHandler = ({onChange})=>{
     const {jpegQuality, setJpegQuality, globalImage, changeImageTrigger, setChangeImageTrigger, JPEGGhostResultUrl, setJPEGGhostResultUrl} = useAppContext();
     var currentVal = jpegQuality[1];
+    const [cachedImage, setCachedImage] =  useState(null)
     const JPEGGhost = async (quality) =>{
-        console.log("jpg " + quality)
-        const blob  = await fetch(globalImage).then(r => r.blob());
-        const formData = new FormData();
-        formData.append('file', blob, 'image.jpg');
-        formData.append('quality', quality);
-        const requestOptions = {
-            method: 'POST',
-            body: formData,
-            headers: {
-                Accept: "application/json",
-              },
-        };
-
-        console.log("post")
-        fetch(URL_SERVER + 'store-and-process-image/', requestOptions)
-        .then((response) => response.json())
-        .then((data) => {
-            console.log(data);
-            setJPEGGhostResultUrl(URL_SERVER + data.result_path)
-        })
-        // .then((blob) => {
-        //     var url = URL.createObjectURL(blob);
-        //     console.log(blob)
-        //     setJPEGGhostResultUrl(url)
-        // })
-        .catch(e=>console.log(e));
+        console.log(cachedImage)
+        if (cachedImage === null){
+            const blob  = await fetch(globalImage).then(r => r.blob());
+            const formData = new FormData();
+            formData.append('file', blob, 'image.jpg');
+            formData.append('quality', quality);
+            const requestOptions = {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    Accept: "application/json",
+                  },
+            };
+           
+            fetch(URL_SERVER + 'store-and-process-image/', requestOptions)
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                setJPEGGhostResultUrl(URL_SERVER + data.result_path)
+                setCachedImage( data.path_saved )
+                console.log(cachedImage);
+            })
+            // .then((blob) => {
+            //     var url = URL.createObjectURL(blob);
+            //     console.log(blob)
+            //     setJPEGGhostResultUrl(url)
+            // })
+            .catch(e=>console.log(e));
+        }
+        else{
+            const formData = new FormData();
+            formData.append('file_name', cachedImage);
+            formData.append('quality', quality);
+            const requestOptions = {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    Accept: "application/json",
+                  },
+            };
+            console.log("2")
+            fetch(URL_SERVER + 'process-only-image/', requestOptions)
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                setJPEGGhostResultUrl(URL_SERVER + data.result_path)
+            })
+            // .then((blob) => {
+            //     var url = URL.createObjectURL(blob);
+            //     console.log(blob)
+            //     setJPEGGhostResultUrl(url)
+            // })
+            .catch(e=>console.log(e));
+        }
+        
     }
     const onLoadJPEGGhost=(quality)=>{
         if (changeImageTrigger === true){
             setChangeImageTrigger(false)
-            
+            JPEGGhost(quality)
         }
        
     }
@@ -55,10 +85,12 @@ const JPEGGhostHandler = ({onChange})=>{
     }
     document.body.onmouseup = onMouseUp;
     useEffect(()=>{
-        if (globalImage){
+        console.log("chaneg image")
+        setTimeout(()=>{ if (globalImage){
             //onChange(jpegQuality[1]/100,globalImage);
             onLoadJPEGGhost(jpegQuality[1]);
-        }
+        }}, 1000)
+       
         return () => {
             console.log("counter unmounted");
             document.body.onmouseup = null;

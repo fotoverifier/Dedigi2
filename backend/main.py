@@ -24,7 +24,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/ProcessedImage", StaticFiles(directory="static"), name="static")
 def jpeg_ghost(img, quality):
     smoothing_b = 17
     offset = (smoothing_b-1)//2
@@ -56,7 +56,7 @@ async def store_and_process(file: Annotated[UploadFile, File()], quality: Annota
         print(quality)
         image = await file.read()
         img = Image.open(io.BytesIO(image)).convert('RGB')
-        path_saved = f"static/Image/{sha256(image).hexdigest()}.jpg"
+        path_saved = f"Image/{sha256(image).hexdigest()}.jpg"
         response = {}
         
         if os.path.exists(path_saved):
@@ -67,7 +67,7 @@ async def store_and_process(file: Annotated[UploadFile, File()], quality: Annota
         response.update({"path_saved": path_saved})
         img_np = np.array(img, np.uint8)
         result = Image.fromarray(jpeg_ghost(img_np, quality))
-        processed_path_saved = f"static/ProcessedImage/{sha256(image + quality.to_bytes(1, 'big')).hexdigest() }.jpg"
+        processed_path_saved = f"ProcessedImage/{sha256(image + quality.to_bytes(1, 'big')).hexdigest() }.jpg"
         result.save(processed_path_saved, "JPEG")
 
         response.update({"result_path": processed_path_saved})
@@ -80,10 +80,11 @@ async def store_and_process(file: Annotated[UploadFile, File()], quality: Annota
 @app.post("/process-only-image")
 async def process_only(file_name: Annotated[str, Form()], quality: Annotated[int, Form()]):
     try:
-        if not os.path.exists(f"static/Image/{file_name}"):
+        print(file_name)
+        if not os.path.exists(f"Image/{file_name}"):
             return JSONResponse({"message": "Image doesn't exists."})
         image = io.BytesIO()
-        img = Image.open(f"static/Image/{file_name}").convert('RGB')
+        img = Image.open(f"Image/{file_name}").convert('RGB')
         img.save(image, format='JPEG')
         
         response = {}
@@ -91,7 +92,7 @@ async def process_only(file_name: Annotated[str, Form()], quality: Annotated[int
         
         img_np = np.array(img, np.uint8)
         result = Image.fromarray(jpeg_ghost(img_np, quality))
-        processed_path_saved = f"static/ProcessedImage/{sha256(image.getvalue() + quality.to_bytes(1, 'big')).hexdigest() }.jpg"
+        processed_path_saved = f"ProcessedImage/{sha256(image.getvalue() + quality.to_bytes(1, 'big')).hexdigest() }.jpg"
         result.save(processed_path_saved, "JPEG")
 
         response.update({"result_path": processed_path_saved})
