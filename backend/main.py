@@ -68,7 +68,7 @@ async def store_and_process(file: Annotated[UploadFile, File()], quality: Annota
 @app.post("/process-only-image")
 async def process_only(file_name: Annotated[str, Form()], quality: Annotated[int, Form()]):
     try:
-        if not os.path.exists(f"Image/{file_name}"):
+        if not os.path.exists(f"Image/{file_name} + .jpeg"):
             return JSONResponse({"message": "Image doesn't exists."})
         image = io.BytesIO()
         img = Image.open(f"Image/{file_name}").convert('RGB')
