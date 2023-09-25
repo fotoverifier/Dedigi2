@@ -9,7 +9,7 @@ import cv2
 import numpy as np
 from hashlib import md5, sha256
 import os
-from flask_cors import CORS
+# from flask_cors import CORS
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI() # gọi constructor và gán vào biến app
