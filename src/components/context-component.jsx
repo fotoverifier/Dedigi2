@@ -19,7 +19,7 @@ export function AppWrapper({ children }) {
 
     //CFA state
     const [CFAResultUrl, setCFAResultUrl] = useState(null);
-
+    const [JPEGGhostResultUrl, setJPEGGhostResultUrl] = useState(null);
     useEffect(()=>{
       resetValue();
     },[globalImage])
@@ -39,7 +39,8 @@ export function AppWrapper({ children }) {
                     jpegQuality, setJpegQuality,
                     CFAResultUrl, setCFAResultUrl,
                     cloningDetectionResultUrl, setCloningDetectionResultUrl,
-                    currentSplicingTool, setCurrentSplicingTool
+                    currentSplicingTool, setCurrentSplicingTool,
+                    JPEGGhostResultUrl, setJPEGGhostResultUrl
                 }
               }
         >

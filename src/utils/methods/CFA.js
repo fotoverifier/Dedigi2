@@ -1,4 +1,4 @@
-const CFA = async () =>{
+export const CFA = async () =>{
     setLoadResult(true)
     const blob  = await fetch(globalImage).then(r => r.blob());
     const formData = new FormData();
@@ -23,7 +23,7 @@ const CFA = async () =>{
         setCFAResultImage(img)
     }).catch(e=>console.log(e));
 }
-const onLoadCFA=()=>{
+export const onLoadCFA=()=>{
     
     if (!CFAResultImage)
         CFA();
@@ -33,4 +33,3 @@ const onLoadCFA=()=>{
         ctx.drawImage(CFAResultImage,0,0); // Or at whatever offset you like
     }
 }
-export default onLoadCFA;

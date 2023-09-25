@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 const NavBar = ({useInHome=false}) =>{
     const [changeColor, setChangeColor] = useState(false)
     const onScroll = () =>{
-        console.log(window.screenY)
+       // console.log(window.screenY)
         if (window.scrollY  >= 100){
             setChangeColor(true);
         }

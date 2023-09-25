@@ -7,6 +7,9 @@ import LoadingSpinner from "./loading-spinner-component";
 const CardPictureResult = ({title, icon, widthPercent="49.5%", yourImage, id})=>{
     const [hidden, setHidden] = useState(true)
     const toggleModal = ()=> { setHidden(!hidden);}
+    const myLoader=({src})=>{
+        return src;
+      }
     return (
         <div className="card-picture border-[0.15vw] rounded-md flex flex-col" style={{width:widthPercent}}>
             <div className="header w-full h-[10%] border-b-[0.15vw] flex flex-col justify-center flex-none">
@@ -33,6 +36,7 @@ const CardPictureResult = ({title, icon, widthPercent="49.5%", yourImage, id})=>
                     {
                         yourImage?
                         <Image
+                            loader={myLoader}
                             id={id}
                             src={yourImage}
                             alt="Your Image"

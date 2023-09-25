@@ -3,9 +3,10 @@ const nextConfig = {
     transpilePackages: ['@acme/ui', 'lodash-es'],
     output: 'standalone',
   images: {
+    domains: ['localhost'],
     remotePatterns: [
         {
-            protocol: 'https',
+            protocol: 'http',
             hostname: '**',
             port: '',
             pathname: '**',
