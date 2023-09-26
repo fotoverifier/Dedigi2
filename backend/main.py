@@ -9,7 +9,7 @@ import cv2
 import numpy as np
 from hashlib import md5, sha256
 import os
-from flask_cors import CORS
+# from flask_cors import CORS
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI() # gọi constructor và gán vào biến app
@@ -24,7 +24,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/api/static", StaticFiles(directory="static"), name="static")
 def jpeg_ghost(img, quality):
     smoothing_b = 17
     offset = (smoothing_b-1)//2
@@ -50,7 +50,7 @@ def jpeg_ghost(img, quality):
     return normalized
 
 
-@app.post("/store-and-process-image")
+@app.post("/api/store-and-process-image")
 async def store_and_process(file: Annotated[UploadFile, File()], quality: Annotated[int, Form()]):
     try:
         print(quality)
@@ -75,7 +75,7 @@ async def store_and_process(file: Annotated[UploadFile, File()], quality: Annota
         return JSONResponse({"error": str(e)})
 
 
-@app.post("/process-only-image")
+@app.post("/api/process-only-image")
 async def process_only(file_name: Annotated[str, Form()], quality: Annotated[int, Form()]):
     try:
         if not os.path.exists(f"{file_name}"):
@@ -101,4 +101,4 @@ async def process_only(file_name: Annotated[str, Form()], quality: Annotated[int
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", reload=True)
