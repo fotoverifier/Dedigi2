@@ -28,8 +28,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - dockerpath: .
+          - dockerpath: ./frontend
             imagename: fotoverifier/dedigi2
+          - dockerpath: ./backend
+            imagename: fotoverifier/dedigi2-backend
 
     permissions:
       contents: read
