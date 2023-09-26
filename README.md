@@ -1,5 +1,5 @@
 # Dedigi
-Hosted at: [https://www.fotoverifier.eu]
+Hosted at: https://www.fotoverifier.eu
 
 ## Installation
 Clone and run project with `docker-compose`:
