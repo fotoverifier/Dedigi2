@@ -32,7 +32,7 @@ services:
     #   # - "traefik.http.middlewares.dedigi2-backend-mdw.stripprefix.prefixes=/api"
   dedigi2:
     build:
-      context: .
+      context: ./frontend
       dockerfile: Dockerfile
     # expose:
     #   - 3000
