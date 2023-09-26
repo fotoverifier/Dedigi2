@@ -20,7 +20,7 @@ const CloningDetectionPage = () => {
                 method: 'POST',
                 body: formData,
               };
-              fetch('https://dedigi.fotoverifier.eu/api/copy-move', requestOptions)
+              fetch('https://www.fotoverifier.eu/api/copy-move', requestOptions)
             .then((response) => response.blob())
             .then((blob) => {
                 
