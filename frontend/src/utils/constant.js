@@ -1,1 +1,1 @@
-export const URL_SERVER = "http://localhost:8000/api/"
+export const URL_SERVER = "/api/"
