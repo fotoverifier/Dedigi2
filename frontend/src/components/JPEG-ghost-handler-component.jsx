@@ -22,7 +22,7 @@ const JPEGGhostHandler = ({onChange})=>{
                   },
             };
            
-            fetch(URL_SERVER + 'store-and-process-image/', requestOptions)
+            fetch(URL_SERVER + 'store-and-process-image', requestOptions)
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
@@ -49,7 +49,7 @@ const JPEGGhostHandler = ({onChange})=>{
                   },
             };
             console.log("2")
-            fetch(URL_SERVER + 'process-only-image/', requestOptions)
+            fetch(URL_SERVER + 'process-only-image', requestOptions)
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);

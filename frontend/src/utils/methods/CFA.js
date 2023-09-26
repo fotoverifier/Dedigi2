@@ -8,7 +8,7 @@ export const CFA = async () =>{
     method: 'POST',
     body: formData,
     };
-    fetch('https://www.fotoverifier.eu/api/cfa', requestOptions)
+    fetch('https://dedigi.fotoverifier.eu/api/cfa', requestOptions)
     .then((response) => response.blob())
     .then((blob) => {
         setLoadResult(false)
